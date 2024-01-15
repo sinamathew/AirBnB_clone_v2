@@ -86,6 +86,25 @@ class HBNBCommand(cmd.Cmd):
         finally:
             return line
 
+    def convert_value(self, value):
+        """ convert any string to int, float """
+        converted = False
+        try:
+            value = int(value)
+            converted = True
+        except Exception:
+            pass
+        try:
+            if not converted:
+                value = float(value)
+                converted = True
+        except Exception:
+            pass
+        if not converted and value is not None and value != '':
+            value = value[1:-1]
+            value = value.replace("_", " ")
+        return value
+
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
@@ -114,17 +133,28 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
+        """ handle create """
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        tokens = args.split()
+        cls = tokens[0]
+        if cls not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        else:
+            tokens = tokens[1:]
+            new_instance = HBNBCommand.classes[cls]()
+            for token in tokens:
+                arr = token.split("=")
+                if len(arr) == 2:
+                    key, value = arr
+                    value = self.convert_value(value)
+                    if value != '':
+                        setattr(new_instance, key, value)
+            print(new_instance.id)
+            storage.save()
 
     def help_create(self):
         """ Help information for the create method """
