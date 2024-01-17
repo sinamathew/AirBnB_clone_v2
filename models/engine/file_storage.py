@@ -11,10 +11,28 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
+    def delete(self, obj=None):
+        """ public method to delete an object from __object """
+        new_obj = {}
+        if obj is not None:
+            try:
+                obj_key = f'{obj.__class__.__name__}.{obj.id}'
+                del FileStorage.__objects[obj_key]
+                self.save()
+            except KeyError:
+                pass
+
     # Public instance method
-    def all(self):
+    def all(self, cls=None):
         """ returns the dictionary __objects """
-        return (FileStorage.__objects)
+        cls_dict = {}
+        if cls is None:
+            return (FileStorage.__objects)
+        else:
+            for key, val in FileStorage.__objects.items():
+                if isinstance(val, cls):
+                    cls_dict[key] = val
+            return cls_dict
 
     def new(self, obj):
         """ sets in __objects the obj with key <obj class name>.id """
@@ -36,7 +54,7 @@ class FileStorage:
         with open(FileStorage.__file_path, "w") as file:
             file.write(json_str)
 
-    def delete(self, obj_id):
+    def delete_by_id(self, obj_id):
         """ delete an object from json file """
         del self.__objects[obj_id]
         self.save()
