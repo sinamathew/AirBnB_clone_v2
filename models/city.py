@@ -5,6 +5,7 @@ from models.base_model import Base
 from sqlalchemy import Column
 from sqlalchemy import String
 from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
 
 
 class City(BaseModel, Base):
