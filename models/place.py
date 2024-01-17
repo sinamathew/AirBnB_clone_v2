@@ -4,13 +4,16 @@ from models.base_model import BaseModel
 from models.base_model import Base
 from models.city import City
 from models.user import User
+from sqlalchemy import String
+from sqlalchemy import Column
+from sqlalchemy import ForeignKey
 
 
 class Place(BaseModel, Base):
     __tablename__ = 'places'
 
-    city_id = Column(String(60), nullable=False, foreign_key='cities.id')
-    user_id = Column(String(60), nullable=False, foreign_key='users.id')
+    city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
+    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024))
     number_rooms = Column(Integer, nullable=False, default=0)
