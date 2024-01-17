@@ -36,7 +36,6 @@ class FileStorage:
                     cls_dict[key] = val
             return cls_dict
 
-
     def new(self, obj):
         """ sets in __objects the obj with key <obj class name>.id """
         cls_name = obj.__class__.__name__
