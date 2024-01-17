@@ -30,9 +30,12 @@ class FileStorage:
             return (FileStorage.__objects)
         else:
             for key, val in FileStorage.__objects.items():
+                if type(cls) is str:
+                    cls = eval(cls)
                 if isinstance(val, cls):
                     cls_dict[key] = val
             return cls_dict
+
 
     def new(self, obj):
         """ sets in __objects the obj with key <obj class name>.id """
