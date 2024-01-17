@@ -44,7 +44,6 @@ class BaseModel:
             except KeyError:
                 pass
             self.__dict__.update(kwargs)
-            print(kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""

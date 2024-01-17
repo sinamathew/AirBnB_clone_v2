@@ -97,4 +97,3 @@ class FileStorage:
                 elif value['__class__'] == "Review":
                     obj = Review(**value)
                 FileStorage.__objects[key] = obj
-                print(obj)
