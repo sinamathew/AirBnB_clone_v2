@@ -23,9 +23,10 @@ class BaseModel:
     """
     id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, nullable=False,
-                                default=datetime.utcnow)
+                        default=datetime.utcnow)
     updated_at = Column(DateTime, nullable=False,
-                                default=datetime.utcnow)
+                        default=datetime.utcnow)
+
     def __init__(self, *args, **kwargs):
         """
         Initialize new model instance
@@ -37,8 +38,13 @@ class BaseModel:
                                                      '%Y-%m-%dT%H:%M:%S.%f')
             kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
+            try:
+                del kwargs['__class__']
+                del self.__dict__['_sa_instance_state']
+            except KeyError:
+                pass
             self.__dict__.update(kwargs)
+            print(kwargs)
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -53,16 +59,16 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
+        try:
+            del self.__dict__['_sa_instance_state']
+        except KeyError:
+            pass
         dictionary = {}
         dictionary.update(self.__dict__)
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        try:
-            del dictionary['_sa_instance_state']
-        except KeyError:
-            pass
         return dictionary
 
     def delete(self):

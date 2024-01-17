@@ -24,11 +24,11 @@ driver = "mysqldb"
 connection_str = f"{dialet}+{driver}://{user}:{password}@{host}/{database}"
 
 
-
 class DBStorage:
     """ class model for AirBNB clone """
     __engine = None
     __session = None
+
     def __init__(self):
         """ instance initializer """
         self.__engine = create_engine(connection_str, pool_pre_ping=True)
@@ -49,7 +49,7 @@ class DBStorage:
             objs.extend(self.__session.query(Place).all())
             objs.extend(self.__session.query(Amenity).all())
         else:
-            if type(cls) == str:
+            if type(cls) is str:
                 cls = eval(cls)
             objs.extend(self.__session.query(cls).all())
         for obj in objs:
@@ -87,5 +87,3 @@ class DBStorage:
     def close(self):
         """ close the current session """
         self.__session.close()
-
-

@@ -9,6 +9,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column
 from sqlalchemy import String
 
+
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
