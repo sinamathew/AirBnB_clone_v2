@@ -9,6 +9,7 @@ from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import Float
 from sqlalchemy import ForeignKey
+from models import storage
 
 
 class Place(BaseModel, Base):
@@ -25,5 +26,7 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
     longitude = Column(Float)
 
+    def reviews(self):
+        return storage.all(Review).filter(Review.place_id == self.id)
     # city = relationship("City", back_populates="places")
     # user = relationship("User", back_populates="places")
