@@ -6,6 +6,8 @@ from models.city import City
 from models.user import User
 from sqlalchemy import String
 from sqlalchemy import Column
+from sqlalchemy import Integer
+from sqlalchemy import Float
 from sqlalchemy import ForeignKey
 
 
