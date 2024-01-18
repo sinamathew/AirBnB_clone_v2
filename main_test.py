@@ -88,23 +88,78 @@ state_name = "California"
 result = exec_command(my_console, "create State name=\"{}\"".format(state_name))
 if result is None or result == "":
     print("FAIL: No ID retrieved")
+    
 state_id = result
 
 city_name = "San Francisco is super cool"
 result = exec_command(my_console, "create City state_id=\"{}\" name=\"{}\"".format(state_id, city_name.replace(" ", "_")))
 if result is None or result == "":
     print("FAIL: No ID retrieved")
+    
 city_id = result
 
-result = exec_command(my_console, "show City {}".format(city_id))
+user_email = "my@me.com"
+user_pwd = "pwd"
+user_fn = "FN"
+user_ln = "LN"
+result = exec_command(my_console, "create User email=\"{}\" password=\"{}\" frist_name=\"{}\" last_name=\"{}\"".format(user_email, user_pwd, user_fn, user_ln))
+if result is None or result == "":
+    print("FAIL: No ID retrieved")
+    
+user_id = result
+
+place_name = "My house"
+place_desc = "no description yet"
+place_nb_rooms = 4
+place_nb_bath = 0
+place_max_guests = -3
+place_price = 100
+place_lat = -120.12
+place_lon = 0.41921928
+result = exec_command(my_console, "create Place city_id=\"{}\" user_id=\"{}\" name=\"{}\" description=\"{}\" number_rooms={} number_bathrooms={} max_guest={} price_by_night={} latitude={} longitude={}".format(city_id, user_id, place_name.replace(" ", "_"), place_desc.replace(" ", "_"), place_nb_rooms, place_nb_bath, place_max_guests, place_price, place_lat, place_lon))
+if result is None or result == "":
+    print("FAIL: No ID retrieved")
+    
+place_id = result
+
+result = exec_command(my_console, "show Place {}".format(place_id))
 if result is None or result == "":
     print("FAIL: empty output")
-if "[City]" not in result or city_id not in result:
+    
+if "[Place]" not in result or place_id not in result:
     print("FAIL: wrong output format: \"{}\"".format(result))
-if "name" not in result or city_name not in result:
-    print("FAIL: name and city name is missing: \"{}\", name => {}, city_name => {}".format(result, "name", city_name))
-if "state_id" not in result or state_id not in result:
-    print("FAIL: state id is missing: \"{}\"".format(result))
+    
+if "city_id" not in result or city_id not in result:
+    print("FAIL: missing new information: \"{}\"".format(result))
+    
+if "user_id" not in result or user_id not in result:
+    print("FAIL: missing new information: \"{}\"".format(result))
+    
+if "name" not in result or place_name not in result:
+    print("FAIL: missing new information: \"{}\"".format(result))
+    
+if "description" not in result or place_desc not in result:
+    print("FAIL: missing new information: \"{}\"".format(result))
+    
+if "number_rooms" not in result or str(place_nb_rooms) not in result:
+    print("FAIL: missing new information: \"{}\"".format(result))
+    
+if "number_bathrooms" not in result or str(place_nb_bath) not in result:
+    print("FAIL: missing new information: \"{}\"".format(result))
+    
+if "max_guest" not in result or str(place_max_guests) not in result:
+    print("FAIL: missing new information: \"{}\"".format(result))
+    
+if "price_by_night" not in result or str(place_price) not in result:
+    print("FAIL: missing new information: \"{}\"".format(result))
+    
+if "latitude" not in result or str(place_lat) not in result:
+    print("FAIL: missing new information: \"{}\"".format(result))
+    
+if "longitude" not in result or str(place_lon) not in result:
+    print("FAIL: missing new information: \"{}\"".format(result))
+    
+
 print("OK", end="")
 
 shutil.copy("tmp_console_main.py", "console.py")
