@@ -181,7 +181,7 @@ class HBNBCommand(cmd.Cmd):
         except Exception:
             pass
         if not converted and value != "":
-            value = value[1:-1].replace("_", " ")
+            value = value[1:-1]
         return value
 
     def do_create(self, model):
@@ -378,5 +378,3 @@ class HBNBCommand(cmd.Cmd):
                 self.invalid_instance()
 
 
-if __name__ == "__main__":
-    HBNBCommand().cmdloop()
